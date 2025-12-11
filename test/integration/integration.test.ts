@@ -1,5 +1,6 @@
 import { Builder, By, until, WebElementCondition, ThenableWebDriver, Browser } from 'selenium-webdriver';
-import Chrome from 'selenium-webdriver/chrome'
+import Chrome from 'selenium-webdriver/chrome';
+import ChromeDriver from 'chromedriver';
 
 const ELEMENT_WAITING_TIME = 30 * 1000;
 const TEST_WAITING_TIME = 60 * 1000;
