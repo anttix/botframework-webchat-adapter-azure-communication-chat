@@ -74,6 +74,11 @@ extends:
                 inputs:
                   command: "install"
               - task: Npm@1
+                displayName: "Install ChromeDriver"
+                inputs:
+                  command: "custom"
+                  customCommand: "run install:chromedriver"
+              - task: Npm@1
                 displayName: "Build App"
                 inputs:
                   command: "custom"
