@@ -4,7 +4,7 @@ import ChromeDriver from 'chromedriver';
 import { log, error } from "console";
 
 const ELEMENT_WAITING_TIME = 30 * 1000;
-const TEST_WAITING_TIME = 60 * 1000;
+const TEST_WAITING_TIME = 70 * 1000;
 
 const chatUrl = `http://localhost:8080/`;
 
@@ -55,7 +55,7 @@ async function webPageDriver(
 describe('executing integration tests for ACS Chat Adapter', () => {
   const messageInputElement = By.css('input[aria-label="Message input box"]');
   const messageSendButtonElement = By.css('button[title="Send"]');
-  const typingIndicatorElement = By.className('webchat__typingIndicator');
+  const typingIndicatorElement = By.css('*[aria-label~="typing"]');
   const fileUploadInputElement = By.css('input[type="file"]');
   const fileUploadButtonElement = By.css('button[title="Upload file"]');
   const attachmentElement = By.css('div[aria-roledescription="attachment"]');
@@ -85,15 +85,16 @@ describe('executing integration tests for ACS Chat Adapter', () => {
 
       // wait for some time to load completely
       // otherwise send message fails
-      await userTwo.sleep(2000);
+      await userTwo.sleep(10000);
+
+      // Start waiting for typing indicator on user one side
+      const typingIndicatorPromise = userOne.wait(untilElementLocated(typingIndicatorElement), ELEMENT_WAITING_TIME);
 
       // User Two type message
       await messageInputBoxUserTwo.sendKeys(message);
 
-      // User one get typing indicator
-      const typingIndicator = await userOne.wait(untilElementLocated(typingIndicatorElement), ELEMENT_WAITING_TIME);
-
-      // user one gets typing indicator
+      // User one gets typing indicator
+      const typingIndicator = await typingIndicatorPromise;
       expect(typingIndicator).not.toBeNull();
 
       // user two send message
